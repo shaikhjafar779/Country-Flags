@@ -9,9 +9,12 @@ const XCountries = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Use the same API endpoint as expected by the test cases
+        const response = await axios.get('https://restcountries.com/v3.1/all');
+        
         // Simulate a delay to see the loading state
         await new Promise(resolve => setTimeout(resolve, 2000));
-        const response = await axios.get('https://xcountries-backend.azurewebsites.net/all');
+        
         setCountries(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -33,14 +36,14 @@ const XCountries = () => {
       {error && <p style={{ textAlign: "center", width: '100%' }}>Error fetching data: {error.message}</p>}
       <div className="country-grid">
         {countries.map((country, index) => (
-          <div key={index + country.name} className="country-item">
+          <div key={index + country.name.common} className="country-item">
             <img 
-              src={country.flag} 
-              alt={`Flag of ${country.name}`} 
+              src={country.flags[0]}  
+              alt={`Flag of ${country.name.common}`} 
               loading="lazy" 
               className="country" 
             />
-            <p>{country.name}</p>
+            <p>{country.name.common}</p>  
           </div>
         ))}
       </div>
